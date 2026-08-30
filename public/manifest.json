@@ -1,0 +1,16 @@
+{
+  "name": "OrderlyQR • Digital Restaurant Menu",
+  "short_name": "OrderlyQR",
+  "description": "WhatsApp-Integrated QR Code Digital Ordering Platform for Restaurants",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF8F5",
+  "theme_color": "#D95D39",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ]
+}

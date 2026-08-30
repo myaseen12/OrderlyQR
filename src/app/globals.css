@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #FAF8F5;
+  --color-foreground: #1F1F24;
+  
+  --color-primary: #D95D39;
+  --color-primary-hover: #C54E2C;
+  --color-sage: #81B29A;
+  --color-sage-hover: #6F9F88;
+  --color-mustard: #F2CC8F;
+  --color-cream: #FAF8F5;
+  --color-ink: #1F1F24;
+  --color-ticket: #FFFFFF;
+  --color-ticket-edge: #EBE8E2;
+  
+  --shadow-ticket: 0 4px 12px rgba(31, 31, 36, 0.04), 0 0 0 1px rgba(31, 31, 36, 0.04);
+  --shadow-ticket-hover: 0 8px 24px rgba(31, 31, 36, 0.06), 0 0 0 1px rgba(31, 31, 36, 0.06);
+  --shadow-ticket-press: 0 2px 4px rgba(31, 31, 36, 0.04), 0 0 0 1px rgba(31, 31, 36, 0.04);
+  
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+}
+
+:root {
+  --background: #FAF8F5;
+  --foreground: #1F1F24;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Scrollbar for Kitchen dashboard */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #EBE8E2;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D5D1C9;
+}
+
+/* Receipt Zag-Zag Edge effect (optional use-case) */
+.ticket-zig-zag {
+  background-image: linear-gradient(-45deg, var(--background) 4px, transparent 0),
+                    linear-gradient(45deg, var(--background) 4px, transparent 0);
+  background-position: left bottom;
+  background-repeat: repeat-x;
+  background-size: 8px 8px;
+}
+
+.ticket-zig-zag-top {
+  background-image: linear-gradient(-135deg, var(--background) 4px, transparent 0),
+                    linear-gradient(135deg, var(--background) 4px, transparent 0);
+  background-position: left top;
+  background-repeat: repeat-x;
+  background-size: 8px 8px;
+}
+
+/* Premium Focus States for Keyboard Accessibility */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Slow Pulsing Skeleton Loading Helper */
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.65; }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
