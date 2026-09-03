@@ -2,15 +2,19 @@
 
 import React, { useActionState, startTransition, useState } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { signupAction } from '@/app/auth/actions'
 import { Button } from '@/components/ui/Button'
 import { Card, CardContent } from '@/components/ui/Card'
+import { Badge } from '@/components/ui/Badge'
 import { TicketDivider } from '@/components/ui/TicketDivider'
-import { Mail, Lock, User, ChefHat, Loader2, ArrowLeft, Building2, Search, ChevronLeft } from 'lucide-react'
+import { Mail, Lock, User, ChefHat, Loader2, ArrowLeft, Building2, Search, ChevronLeft, Sparkles } from 'lucide-react'
 
 import { BackButton } from '@/components/ui/BackButton'
 
 export default function SignupPage() {
+  const searchParams = useSearchParams()
+  const selectedPlan = searchParams.get('plan')
   const [state, formAction, isPending] = useActionState(signupAction, null)
   
   // Custom interactive state for toggling onboarding flow
@@ -57,6 +61,17 @@ export default function SignupPage() {
         </div>
 
         <CardContent className="p-6 space-y-4">
+          {selectedPlan && (
+            <div className="bg-primary/10 border border-primary/20 rounded-xl p-3 text-center space-y-1">
+              <Badge variant="sage" className="font-mono text-[9px] uppercase tracking-wider">
+                <Sparkles className="h-3 w-3 mr-1" /> {selectedPlan.toUpperCase()} PLAN SELECTED
+              </Badge>
+              <p className="text-[11px] font-mono text-ink/75 font-semibold">
+                {selectedPlan === 'growth' ? '14-Day Free Trial included. No credit card required.' : selectedPlan === 'starter' ? 'Starter Plan selected. Instant onboarding.' : 'Enterprise Plan request. Onboard & contact team.'}
+              </p>
+            </div>
+          )}
+
           <div className="text-center">
             <h1 className="font-bold text-lg text-ink">Staff & Owner Onboarding</h1>
             <p className="text-xs text-ink/50 mt-1">Set up your profile and link your kitchen</p>

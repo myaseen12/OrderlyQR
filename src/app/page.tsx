@@ -360,8 +360,16 @@ export default function MarketingLandingPage() {
       {/* 6. RESTAURANT DASHBOARD ANALYTICS PREVIEW (IN PKR) */}
       <section id="platform" className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-10">
         <div className="text-center max-w-2xl mx-auto space-y-3">
-          <span className="text-xs font-mono font-bold uppercase text-primary tracking-widest">Executive Insights</span>
+          <div className="flex items-center justify-center gap-2 flex-wrap">
+            <span className="text-xs font-mono font-bold uppercase text-primary tracking-widest">Executive Insights</span>
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider bg-amber-50 text-amber-800 border border-amber-300 px-2.5 py-0.5 rounded-full">
+              Sample Demo Data
+            </span>
+          </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-ink font-sans">Live Restaurant Performance Dashboard</h2>
+          <p className="text-xs text-ink/50 font-mono">
+            Illustrative preview metrics for a single branch. Realtime sales & KOT ticket metrics update automatically once your restaurant goes live.
+          </p>
         </div>
 
         <Card className="bg-white border border-ticket-edge shadow-lg rounded-2xl overflow-hidden p-6 sm:p-8 space-y-6">
@@ -429,6 +437,7 @@ export default function MarketingLandingPage() {
         <div className="text-center max-w-2xl mx-auto space-y-3">
           <span className="text-xs font-mono font-bold uppercase text-primary tracking-widest">Transparent Pricing</span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-ink font-sans">Choose Your Restaurant Plan</h2>
+          <p className="text-xs text-ink/60 font-mono">14-Day Free Trial Available · Instant Setup · No Credit Card Required</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -443,7 +452,7 @@ export default function MarketingLandingPage() {
                 <li className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-600" /> Kitchen KOT Display</li>
               </ul>
             </div>
-            <Link href="/signup">
+            <Link href="/signup?plan=starter">
               <Button variant="outline" className="w-full font-mono text-xs">Get Started</Button>
             </Link>
           </Card>
@@ -463,7 +472,7 @@ export default function MarketingLandingPage() {
                 <li className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-600" /> Reservations & POS</li>
               </ul>
             </div>
-            <Link href="/signup">
+            <Link href="/signup?plan=growth">
               <Button className="w-full font-mono text-xs">Start 14-Day Free Trial</Button>
             </Link>
           </Card>
@@ -479,7 +488,7 @@ export default function MarketingLandingPage() {
                 <li className="flex items-center gap-2"><Check className="h-4 w-4 text-emerald-600" /> Dedicated Account Manager</li>
               </ul>
             </div>
-            <Link href="/signup">
+            <Link href="/signup?plan=enterprise">
               <Button variant="outline" className="w-full font-mono text-xs">Contact Sales</Button>
             </Link>
           </Card>

@@ -113,7 +113,7 @@ export interface Order {
 // -------------------------------------------------------------
 
 export const MOCK_RESTAURANT: Restaurant = {
-  id: 'rest-rustique-uuid',
+  id: 'bistro-rustique-id',
   name: 'Bistro Rustique',
   slug: 'bistro-rustique',
   description: 'Artisanal woodfired pizzas, premium cuts, and handcrafted cocktails in a warm, cozy setting.',
