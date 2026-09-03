@@ -360,13 +360,13 @@ export default function MarketingLandingPage() {
       {/* 6. RESTAURANT DASHBOARD ANALYTICS PREVIEW (IN PKR) */}
       <section id="platform" className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-20 space-y-10">
         <div className="text-center max-w-2xl mx-auto space-y-3">
-          <div className="flex items-center justify-center gap-2 flex-wrap">
-            <span className="text-xs font-mono font-bold uppercase text-primary tracking-widest">Executive Insights</span>
-            <span className="text-[10px] font-mono font-bold uppercase tracking-wider bg-amber-50 text-amber-800 border border-amber-300 px-2.5 py-0.5 rounded-full">
-              Sample Demo Data
+          <span className="text-xs font-mono font-bold uppercase text-primary tracking-widest block">Executive Insights</span>
+          <div className="flex items-center justify-center gap-2.5 flex-wrap">
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-ink font-sans">Live Restaurant Performance Dashboard</h2>
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider bg-amber-100/80 text-amber-900 border border-amber-300 px-2.5 py-1 rounded-full shadow-2xs">
+              Sample Data
             </span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-ink font-sans">Live Restaurant Performance Dashboard</h2>
           <p className="text-xs text-ink/50 font-mono">
             Illustrative preview metrics for a single branch. Realtime sales & KOT ticket metrics update automatically once your restaurant goes live.
           </p>
