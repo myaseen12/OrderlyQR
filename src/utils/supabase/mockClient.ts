@@ -40,17 +40,29 @@ if (!globalForMock.mockDB) {
       }
     ],
     restaurant_tables: [
-      { id: "table-1", restaurant_id: "bistro-rustique-id", table_number: "3", qr_token: "tok-bistro-rustique-table-3-abcd", is_active: true },
-      { id: "table-2", restaurant_id: "bistro-rustique-id", table_number: "5", qr_token: "tok-bistro-rustique-table-5-efgh", is_active: true }
+      { id: "table-1-uuid", restaurant_id: "bistro-rustique-id", table_number: "1", qr_token: "tok-table-1", is_active: true },
+      { id: "table-2-uuid", restaurant_id: "bistro-rustique-id", table_number: "2", qr_token: "tok-table-2", is_active: true },
+      { id: "table-3-uuid", restaurant_id: "bistro-rustique-id", table_number: "3", qr_token: "tok-table-3", is_active: true },
+      { id: "table-4-uuid", restaurant_id: "bistro-rustique-id", table_number: "4", qr_token: "tok-table-4", is_active: true },
+      { id: "table-bar-uuid", restaurant_id: "bistro-rustique-id", table_number: "Bar-B", qr_token: "tok-table-bar", is_active: true }
     ],
     categories: [
-      { id: "cat-1", restaurant_id: "bistro-rustique-id", name: "Main Courses", description: "Gourmet dishes cooked to perfection", sort_order: 10, is_active: true },
-      { id: "cat-2", restaurant_id: "bistro-rustique-id", name: "Beverages", description: "Ice cold drinks and local craft beers", sort_order: 20, is_active: true }
+      { id: "cat-starters", restaurant_id: "bistro-rustique-id", name: "Starters", description: "Light bites to wake up your palate", sort_order: 10, is_active: true },
+      { id: "cat-mains", restaurant_id: "bistro-rustique-id", name: "Mains & Steaks", description: "Woodfired grill specialties", sort_order: 20, is_active: true },
+      { id: "cat-pizzas", restaurant_id: "bistro-rustique-id", name: "Artisan Pizzas", description: "Sourdough woodfired pizzas", sort_order: 30, is_active: true },
+      { id: "cat-desserts", restaurant_id: "bistro-rustique-id", name: "Desserts", description: "Sweet conclusions", sort_order: 40, is_active: true },
+      { id: "cat-drinks", restaurant_id: "bistro-rustique-id", name: "Drinks", description: "Craft brews and soft press", sort_order: 50, is_active: true }
     ],
     menu_items: [
-      { id: "item-1", restaurant_id: "bistro-rustique-id", category_id: "cat-1", name: "Smash Burger", description: "Double beef patty, cheddar cheese, special sauce", price: 12.50, image_url: "🍔", is_available: true, sort_order: 10 },
-      { id: "item-2", restaurant_id: "bistro-rustique-id", category_id: "cat-1", name: "Woodfired Pizza", description: "Mozzarella, fresh basil, rustic tomato sauce", price: 14.00, image_url: "🍕", is_available: true, sort_order: 20 },
-      { id: "item-3", restaurant_id: "bistro-rustique-id", category_id: "cat-2", name: "Craft IPA", description: "Local pale ale with citrus undertones", price: 6.50, image_url: "🍺", is_available: true, sort_order: 10 }
+      { id: "menu-truffle-fries", restaurant_id: "bistro-rustique-id", category_id: "cat-starters", name: "Truffle Parmesan Fries", description: "Double-cooked handcut Russet potatoes, tossed in black truffle oil", price: 2700, image_url: "🍟", is_available: true, sort_order: 10 },
+      { id: "menu-calamari", restaurant_id: "bistro-rustique-id", category_id: "cat-starters", name: "Woodfired Calamari", description: "Tender squid seasoned with sea salt", price: 3950, image_url: "🦑", is_available: true, sort_order: 20 },
+      { id: "menu-burger", restaurant_id: "bistro-rustique-id", category_id: "cat-mains", name: "Rustique Smash Burger", description: "Two dry-aged beef patties smashed crispy with melted cheese", price: 4650, image_url: "🍔", is_available: true, sort_order: 10 },
+      { id: "menu-ribeye", restaurant_id: "bistro-rustique-id", category_id: "cat-mains", name: "Dry-Aged Ribeye Steak", description: "14oz Prime bone-in ribeye chargrilled over red oak coals", price: 11800, image_url: "🥩", is_available: true, sort_order: 20 },
+      { id: "menu-margherita", restaurant_id: "bistro-rustique-id", category_id: "cat-pizzas", name: "Margherita DOC Pizza", description: "Sourdough crust, San Marzano tomato sauce", price: 4200, image_url: "🍕", is_available: true, sort_order: 10 },
+      { id: "menu-diavola", restaurant_id: "bistro-rustique-id", category_id: "cat-pizzas", name: "Spicy Diavola Pizza", description: "San Marzano base, fior di latte, spicy salami", price: 4950, image_url: "🌶️", is_available: true, sort_order: 20 },
+      { id: "menu-tiramisu", restaurant_id: "bistro-rustique-id", category_id: "cat-desserts", name: "Classic Tiramisu", description: "Layers of espresso-soaked ladyfingers", price: 2400, image_url: "🍰", is_available: true, sort_order: 10 },
+      { id: "menu-lemonade", restaurant_id: "bistro-rustique-id", category_id: "cat-drinks", name: "House Press Rosemary Lemonade", description: "Fresh squeezed Eureka lemons", price: 1550, image_url: "🍹", is_available: true, sort_order: 10 },
+      { id: "menu-ipa", restaurant_id: "bistro-rustique-id", category_id: "cat-drinks", name: "Bistro Craft IPA", description: "Local artisanal brew with piney citrus finish", price: 1950, image_url: "🍺", is_available: true, sort_order: 20 }
     ],
     orders: [],
     order_items: [],

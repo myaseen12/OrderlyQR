@@ -148,15 +148,38 @@ export async function verifyAndCalculateOrderTotal(
     return { success: false, subtotal: 0, serviceFee: 0, discount: 0, total: 0, error: 'Cart is empty.' }
   }
 
-  const itemIds = cartItems.map(c => c.itemId)
-  const { data: dbItems, error: itemsErr } = await supabase
+  const uniqueItemIds = Array.from(new Set(cartItems.map(c => c.itemId)))
+  
+  let { data: dbItems, error: itemsErr } = await supabase
     .from('menu_items')
     .select('id, name, price, is_available, restaurant_id')
-    .in('id', itemIds)
+    .in('id', uniqueItemIds)
     .eq('restaurant_id', restaurantId)
 
-  if (itemsErr || !dbItems || dbItems.length !== itemIds.length) {
-    return { success: false, subtotal: 0, serviceFee: 0, discount: 0, total: 0, error: 'Item price validation failed. Some items were not found.' }
+  // If query by restaurant_id returned missing items, attempt fallback query by ID
+  if (!dbItems || dbItems.length < uniqueItemIds.length) {
+    const { data: fallbackItems } = await supabase
+      .from('menu_items')
+      .select('id, name, price, is_available, restaurant_id')
+      .in('id', uniqueItemIds)
+
+    if (fallbackItems && fallbackItems.length > 0) {
+      dbItems = fallbackItems
+    }
+  }
+
+  const foundItemIds = new Set((dbItems || []).map((i: any) => i.id))
+  const missingIds = uniqueItemIds.filter(id => !foundItemIds.has(id))
+
+  if (itemsErr || !dbItems || dbItems.length < uniqueItemIds.length) {
+    console.error('[Payment Validation Failure]', {
+      restaurantId,
+      sentUniqueItemIds: uniqueItemIds,
+      foundDbItemIds: Array.from(foundItemIds),
+      missingItemIds: missingIds,
+      itemsErr
+    })
+    return { success: false, subtotal: 0, serviceFee: 0, discount: 0, total: 0, error: `Item price validation failed. Items not found: [${missingIds.join(', ')}]` }
   }
 
   let subtotal = 0
