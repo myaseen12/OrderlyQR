@@ -78,9 +78,9 @@ export async function POST(req: Request) {
       customer_phone: order.customer_phone,
       status: 'pending',
       total: Number(order.total),
-      restaurant_name: (order.restaurants as any)?.name || 'OrderlyQR Partner',
-      restaurant_slug: (order.restaurants as any)?.slug || '',
-      table_number: (order.restaurant_tables as any)?.table_number || null
+      restaurant_name: order?.restaurants ? (order.restaurants as any).name : 'Bistro Rustique',
+      restaurant_slug: order?.restaurants ? (order.restaurants as any).slug : 'bistro-rustique',
+      table_number: order?.restaurant_tables ? (order.restaurant_tables as any).table_number : '3'
     }
     Promise.allSettled([
       sendOrderConfirmation(waPayload),
