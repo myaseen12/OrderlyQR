@@ -123,6 +123,10 @@ class MockQueryBuilder {
   isSingle = false
   isMaybeSingle = false
   isDelete = false
+  isInsert = false
+  insertPayload: any = null
+  isUpdate = false
+  updatePayload: any = null
   limitVal = 0
 
   constructor(tableName: string) {
@@ -178,9 +182,67 @@ class MockQueryBuilder {
     return this
   }
 
+  insert(payload: any) {
+    this.isInsert = true
+    this.insertPayload = payload
+    return this
+  }
+
+  update(payload: any) {
+    this.isUpdate = true
+    this.updatePayload = payload
+    return this
+  }
+
+  delete() {
+    this.isDelete = true
+    return this
+  }
+
   async then(onfulfilled?: (value: any) => any, onrejected?: (reason: any) => any) {
     try {
       const db = mockDB as any
+
+      if (this.isInsert) {
+        const list = db[this.tableName] || []
+        const payload = this.insertPayload
+        const itemsToInsert = Array.isArray(payload) ? payload : [payload]
+        const inserted = itemsToInsert.map(item => {
+          const newRow = { 
+            id: item.id || `id-${Math.random().toString(36).substring(2, 10)}`, 
+            created_at: new Date().toISOString(),
+            updated_at: new Date().toISOString(),
+            ...item 
+          }
+          list.push(newRow)
+          return newRow
+        })
+
+        const resData = Array.isArray(payload) ? inserted : (this.isSingle || this.isMaybeSingle ? inserted[0] : inserted)
+        const insertRes = { data: resData, error: null }
+        return onfulfilled ? onfulfilled(insertRes) : insertRes
+      }
+
+      if (this.isUpdate) {
+        const list = db[this.tableName] || []
+        const matched: any[] = []
+        for (let i = 0; i < list.length; i++) {
+          let matches = true
+          for (const filter of this.filters) {
+            if (!filter(list[i])) {
+              matches = false
+              break
+            }
+          }
+          if (matches) {
+            list[i] = { ...list[i], ...this.updatePayload, updated_at: new Date().toISOString() }
+            matched.push(list[i])
+          }
+        }
+        const resData = this.isSingle || this.isMaybeSingle ? (matched[0] || null) : matched
+        const updateRes = { data: resData, error: null }
+        return onfulfilled ? onfulfilled(updateRes) : updateRes
+      }
 
       if (this.isDelete) {
         const list = db[this.tableName] || []
@@ -276,68 +338,6 @@ class MockQueryBuilder {
       }
       throw err
     }
-  }
-
-  async insert(payload: any) {
-    const db = mockDB as any
-    const list = db[this.tableName] || []
-    
-    const itemsToInsert = Array.isArray(payload) ? payload : [payload]
-    const inserted = itemsToInsert.map(item => {
-      const newRow = { 
-        id: `id-${Math.random().toString(36).substring(2, 10)}`, 
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        ...item 
-      }
-      list.push(newRow)
-      return newRow
-    })
-
-    const finalRes = { 
-      data: Array.isArray(payload) ? inserted : inserted[0], 
-      error: null
-    }
-
-    return {
-      ...finalRes,
-      select: () => ({
-        single: async () => ({ data: finalRes.data, error: null })
-      })
-    }
-  }
-
-  async update(payload: any) {
-    const db = mockDB as any
-    const list = db[this.tableName] || []
-    
-    const matched: any[] = []
-    for (let i = 0; i < list.length; i++) {
-      let matches = true
-      for (const filter of this.filters) {
-        if (!filter(list[i])) {
-          matches = false
-          break
-        }
-      }
-      if (matches) {
-        list[i] = { ...list[i], ...payload, updated_at: new Date().toISOString() }
-        matched.push(list[i])
-      }
-    }
-
-    const finalRes = { data: matched, error: null }
-    return {
-      ...finalRes,
-      select: () => ({
-        single: async () => ({ data: matched[0] || null, error: null })
-      })
-    }
-  }
-
-  delete() {
-    this.isDelete = true
-    return this
   }
 }
 
