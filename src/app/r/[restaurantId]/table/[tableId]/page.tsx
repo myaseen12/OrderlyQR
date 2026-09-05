@@ -328,33 +328,15 @@ export default function CustomerMenuPage() {
         return
       }
 
-      // If redirect URL or postData returned for online gateway (EasyPaisa/JazzCash/Card)
-      if (data.redirectUrl) {
-        window.location.href = data.redirectUrl
-        return
+      if (selectedPaymentMethod !== 'cash') {
+        // Simulated loading state for demo mode
+        await new Promise(resolve => setTimeout(resolve, 1500))
       }
 
-      if (data.postData && data.gatewayUrl) {
-        // Auto-submit POST form for gateway
-        const form = document.createElement('form')
-        form.method = 'POST'
-        form.action = data.gatewayUrl
-        for (const [key, value] of Object.entries(data.postData)) {
-          const input = document.createElement('input')
-          input.type = 'hidden'
-          input.name = key
-          input.value = value as string
-          form.appendChild(input)
-        }
-        document.body.appendChild(form)
-        form.submit()
-        return
-      }
-
-      // For cash orders or instant confirmations
       setCart([])
       setIsCartOpen(false)
-      window.location.href = `/payment/status?status=PAID&orderId=${data.orderId}&ref=${data.merchantReference}`
+      const statusParam = data.status || (selectedPaymentMethod === 'cash' ? 'PENDING_CASH' : 'SUCCESS')
+      window.location.href = `/payment/status?status=${statusParam}&orderId=${data.orderId}&ref=${data.merchantReference}`
 
     } catch (err: any) {
       alert(`Payment Processing Error: ${err.message || err}`)
@@ -1075,6 +1057,11 @@ export default function CustomerMenuPage() {
                           <span className="text-[10px] text-amber-600 uppercase font-bold block">Counter</span>
                           <span className="text-xs font-bold mt-1">Cash</span>
                         </button>
+                      </div>
+
+                      <div className="text-[10px] font-mono text-amber-700 bg-amber-50 border border-amber-200 p-2.5 rounded-xl flex items-center gap-1.5 mt-2 font-medium">
+                        <span>💡</span>
+                        <span>Demo Mode — payments are simulated for demonstration</span>
                       </div>
                     </div>
 

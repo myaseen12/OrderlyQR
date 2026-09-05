@@ -71,35 +71,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: `Failed to record payment: ${payErr?.message}` }, { status: 500 })
     }
 
-    // 5. Fetch JazzCash configuration & compute HMAC secure hash
-    const config = getPaymentProviderConfig('jazzcash')
-    const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3001'
+    // Note: Simulated pending real merchant credentials configuration
+    await supabase
+      .from('payments')
+      .update({ status: 'SUCCESS', transaction_id: `JC-DEMO-TXN-${Date.now()}` })
+      .eq('id', payment.id)
 
-    // Amount in JazzCash format (integer without decimals e.g., 964000 for PKR 9,640.00)
-    const amountInCents = Math.round(verification.total * 100).toString()
-
-    const postData: Record<string, string> = {
-      pp_Version: '1.1',
-      pp_TxnType: 'MWALLET',
-      pp_Language: 'EN',
-      pp_MerchantID: config.merchantId || 'JC_MOCK_MERCHANT',
-      pp_SubMerchantID: '',
-      pp_Password: config.password || 'jc_pass_123',
-      pp_BankID: 'TBANK',
-      pp_ProductID: 'RESTAURANT_ORDER',
-      pp_TxnRefNo: merchantRef,
-      pp_Amount: amountInCents,
-      pp_TxnCurrency: 'PKR',
-      pp_TxnDateTime: txnDateTime,
-      pp_BillReference: `ORDER-${order.order_number}`,
-      pp_Description: `Dining ticket ${order.order_number}`,
-      pp_TxnExpiryDateTime: expiryDateTime,
-      pp_ReturnURL: `${origin}/api/payments/jazzcash/callback`,
-      pp_SecureHash: ''
-    }
-
-    // Calculate HMAC SHA256 Signature using JazzCash Integrity Salt
-    postData.pp_SecureHash = generateJazzCashSecureHash(postData, config.integritySalt || 'mock_salt')
+    await supabase
+      .from('orders')
+      .update({ status: 'accepted', payment_status: 'paid' })
+      .eq('id', order.id)
 
     return NextResponse.json({
       success: true,
@@ -107,9 +88,8 @@ export async function POST(req: Request) {
       orderNumber: order.order_number,
       paymentId: payment.id,
       merchantReference: merchantRef,
-      gatewayUrl: config.postUrl,
-      postData,
-      isSandbox: config.env === 'sandbox'
+      status: 'SUCCESS',
+      isDemo: true
     })
 
   } catch (err: any) {

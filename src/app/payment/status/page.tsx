@@ -78,14 +78,14 @@ export default function PaymentStatusPage() {
         <Card className="bg-white border border-ticket-edge shadow-xl rounded-3xl overflow-hidden">
           <CardContent className="p-8 space-y-6 text-center">
             
-            {status === 'PAID' && (
+            {(status === 'PAID' || status === 'SUCCESS') && (
               <>
                 <div className="h-20 w-20 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center mx-auto border-4 border-emerald-50 shadow-inner">
                   <CheckCircle2 className="h-10 w-10 stroke-[2.5]" />
                 </div>
                 <div className="space-y-1">
                   <Badge variant="sage" className="font-mono uppercase tracking-widest text-[10px] px-3 py-1">
-                    ✓ Verified Payment
+                    ✓ Paid (Demo Mode)
                   </Badge>
                   <h1 className="font-mono font-bold text-2xl text-ink pt-2">Payment Successful!</h1>
                   <p className="text-xs text-ink/60">Your order has been confirmed and sent directly to the kitchen display.</p>
@@ -93,17 +93,17 @@ export default function PaymentStatusPage() {
               </>
             )}
 
-            {status === 'PENDING' && (
+            {(status === 'PENDING_CASH' || status === 'COUNTER' || status === 'CASH') && (
               <>
                 <div className="h-20 w-20 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center mx-auto border-4 border-amber-50 shadow-inner">
-                  <Clock className="h-10 w-10 animate-pulse stroke-[2.5]" />
+                  <ChefHat className="h-10 w-10 stroke-[2.5] text-amber-600" />
                 </div>
                 <div className="space-y-1">
-                  <Badge variant="outline" className="font-mono uppercase tracking-widest text-[10px] px-3 py-1 text-amber-700 border-amber-300 bg-amber-50">
-                    ● Verification Pending
+                  <Badge variant="outline" className="font-mono uppercase tracking-widest text-[10px] px-3 py-1 text-amber-800 border-amber-300 bg-amber-50">
+                    ● Order Sent to Kitchen
                   </Badge>
-                  <h1 className="font-mono font-bold text-2xl text-ink pt-2">Awaiting Payment Confirmation</h1>
-                  <p className="text-xs text-ink/60">Please complete the payment prompt on your mobile app or wallet screen.</p>
+                  <h1 className="font-mono font-bold text-2xl text-ink pt-2">Order Confirmed!</h1>
+                  <p className="text-xs text-ink/60">Your order is being prepared. Please pay cash at the counter or to your server upon dining.</p>
                 </div>
               </>
             )}
@@ -163,7 +163,7 @@ export default function PaymentStatusPage() {
 
             {/* CTAs */}
             <div className="space-y-3 pt-2">
-              {status === 'PAID' ? (
+              {(status === 'PAID' || status === 'SUCCESS' || status === 'PENDING_CASH' || status === 'COUNTER' || status === 'CASH') ? (
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link href={`/order/${paymentDetails?.order_id || orderIdParam}`} className="flex-1">
                     <Button className="w-full h-12 font-mono text-xs uppercase tracking-wider gap-2">

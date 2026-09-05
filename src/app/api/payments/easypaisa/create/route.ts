@@ -67,21 +67,16 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: `Failed to initialize payment: ${payErr?.message}` }, { status: 500 })
     }
 
-    // 5. Get EasyPaisa provider configuration
-    const config = getPaymentProviderConfig('easypaisa')
+    // Note: Simulated pending real merchant credentials configuration
+    await supabase
+      .from('payments')
+      .update({ status: 'SUCCESS', transaction_id: `EP-DEMO-TXN-${Date.now()}` })
+      .eq('id', payment.id)
 
-    // 6. Build official EasyPaisa payload
-    const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3001'
-    const postData: Record<string, string> = {
-      storeId: config.storeId || 'EP_STORE_88',
-      amount: verification.total.toFixed(2),
-      postBackURL: `${origin}/api/payments/easypaisa/callback`,
-      orderRefNum: merchantRef,
-      merchantHashedReq: ''
-    }
-
-    // Compute secure hash
-    postData.merchantHashedReq = generateEasyPaisaHash(postData, config.hashKey || 'mock_hash')
+    await supabase
+      .from('orders')
+      .update({ status: 'accepted', payment_status: 'paid' })
+      .eq('id', order.id)
 
     return NextResponse.json({
       success: true,
@@ -89,9 +84,8 @@ export async function POST(req: Request) {
       orderNumber: order.order_number,
       paymentId: payment.id,
       merchantReference: merchantRef,
-      gatewayUrl: config.postUrl,
-      postData,
-      isSandbox: config.env === 'sandbox'
+      status: 'SUCCESS',
+      isDemo: true
     })
 
   } catch (err: any) {

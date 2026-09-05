@@ -65,18 +65,25 @@ export async function POST(req: Request) {
       return NextResponse.json({ success: false, error: `Payment record creation failed: ${payErr?.message}` }, { status: 500 })
     }
 
-    const config = getPaymentProviderConfig('card')
-    const origin = req.headers.get('origin') || process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3001'
+    // Note: Simulated pending real merchant credentials configuration
+    await supabase
+      .from('payments')
+      .update({ status: 'SUCCESS', transaction_id: `CARD-DEMO-TXN-${Date.now()}` })
+      .eq('id', payment.id)
 
-    // Return hosted checkout redirect configuration
+    await supabase
+      .from('orders')
+      .update({ status: 'accepted', payment_status: 'paid' })
+      .eq('id', order.id)
+
     return NextResponse.json({
       success: true,
       orderId: order.id,
       orderNumber: order.order_number,
       paymentId: payment.id,
       merchantReference: merchantRef,
-      redirectUrl: `${origin}/api/payments/card/callback?ref=${merchantRef}&status=SUCCESS`,
-      isSandbox: config.env === 'sandbox'
+      status: 'SUCCESS',
+      isDemo: true
     })
 
   } catch (err: any) {
