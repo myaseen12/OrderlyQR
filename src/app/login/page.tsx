@@ -21,6 +21,15 @@ export default function LoginPage() {
     })
   }
 
+  const handleDemoLogin = () => {
+    const formData = new FormData()
+    formData.append('email', 'staff@bistrorustique.com')
+    formData.append('password', 'password123')
+    startTransition(() => {
+      formAction(formData)
+    })
+  }
+
   return (
     <div className="min-h-screen bg-background text-ink flex flex-col items-center justify-center p-6 select-none relative">
       <BackButton fallbackUrl="/" label="Home" className="absolute top-6 left-6" />
@@ -108,14 +117,25 @@ export default function LoginPage() {
 
           <TicketDivider />
 
-          {/* Testing assistance */}
-          <div className="bg-background border border-ticket-edge rounded-lg p-3 space-y-1">
-            <span className="text-[9px] font-mono font-bold text-ink/40 uppercase block">Demo Credentials</span>
-            <div className="text-[10px] font-mono text-ink/65 space-y-0.5">
-              <div>Email: <code className="bg-ink/5 px-1 py-0.5 rounded">staff@bistrorustique.com</code></div>
-              <div>Pass: <code className="bg-ink/5 px-1 py-0.5 rounded">password123</code></div>
-            </div>
-          </div>
+          {/* Quick Demo Login Action Button */}
+          <Button
+            type="button"
+            variant="outline"
+            onClick={handleDemoLogin}
+            disabled={isPending}
+            className="w-full h-11 text-xs font-mono font-bold uppercase tracking-wider gap-2 border-dashed border-primary/40 hover:bg-primary/5 text-primary"
+          >
+            {isPending ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <ChefHat className="h-4 w-4 text-primary" />
+            )}
+            Try Demo Kitchen Console
+          </Button>
+
+          {process.env.NEXT_PUBLIC_ENV !== 'production' && process.env.NODE_ENV !== 'production' && (
+            <DemoCredentialsBlock />
+          )}
 
           <div className="text-center pt-2">
             <p className="text-[11px] text-ink/60">
@@ -128,6 +148,17 @@ export default function LoginPage() {
 
         </CardContent>
       </Card>
+    </div>
+  )
+}
+
+function DemoCredentialsBlock() {
+  return (
+    <div className="bg-background border border-ticket-edge rounded-lg p-3 space-y-1">
+      <span className="text-[9px] font-mono font-bold text-ink/40 uppercase block">Developer Sandbox Mode</span>
+      <p className="text-[10px] font-mono text-ink/65">
+        Sandbox environment active for local development.
+      </p>
     </div>
   )
 }
